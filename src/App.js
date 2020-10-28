@@ -5,7 +5,10 @@ import Upload from './component/upload'
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { apiResponse: '' };
+    this.state = { 
+      apiResponse: '',
+      apiModelResponse: ''
+    };
   }
 
   callAPI() {
@@ -24,6 +27,7 @@ class App extends React.Component {
       <div className="App">
         <p className='App-intro'>
           {this.state.apiResponse}
+          {this.state.apiModelResponse}
         </p>
         <div className="Card">
           <Upload />

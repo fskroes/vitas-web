@@ -136,14 +136,22 @@ class Upload extends React.Component {
             {this.state.files.map(file => {
               return (
                 <div key={file.name} className="Row">
+                  
                   <span className="Filename">{file.name}</span>
                   {this.renderProgress(file)}
                 </div>
               );
             })}
-          </div>
+          </div>      
         </div>
         <div className="Actions">{this.renderActions()}</div>
+        <div>
+            {this.state.files.map(file => {
+              return (
+                  <img src={URL.createObjectURL(file)} />
+                );
+            })}
+          </div>
       </div>
     );
   }

@@ -12,7 +12,8 @@ class Upload extends React.Component {
       uploading: false,
       uploadProgress: {},
       successfullUploaded: false,
-      predictions: []
+      TFpredictions: [],
+      CVpredictions: []
     };
 
     this.onFilesAdded = this.onFilesAdded.bind(this);
@@ -30,10 +31,10 @@ class Upload extends React.Component {
 
   async uploadFiles() {
     this.setState({ uploadProgress: {}, uploading: true });
-    const promises = [];
-    this.state.files.forEach(file => {
-      promises.push(this.sendRequest(file));
-    });
+    // const promises = [];
+    // this.state.files.forEach(file => {
+    //   promises.push(this.sendRequest(file));
+    // });
     try {
       this.state.files.forEach(file => {
         const formData = new FormData();
@@ -44,7 +45,10 @@ class Upload extends React.Component {
           body: formData
         })
         .then(res => res.json())
-        .then(json => this.setState({predictions: json.data.top5 }))
+        .then(json => {
+          this.setState({TFpredictions: json.dataTF.top5 })
+          this.setState({CVpredictions: json.dataCV.top5_customvision})
+        })
         .catch(err => console.log(err));
       });
       
@@ -140,12 +144,18 @@ class Upload extends React.Component {
   }
 
   renderPredictions() {
-    if (this.state.predictions.length > 0) {
+    if (this.state.TFpredictions.length > 0 || this.state.CVpredictions.length > 0) {
       return (
         <div>
-        {this.state.predictions.map(function(d, idx){
-           return (<li key={idx}>Class: {d.class} - probability: {d.prob}</li>)
-         })}
+          TensorFlow predictions: 
+          {this.state.TFpredictions.map(function(d, idx){
+            return (<li key={idx}>Class: {d.class} - probability: {d.prob}</li>)
+          })}
+          
+          Custom Vision predictions: 
+          {this.state.CVpredictions.map(function(d, idx){
+            return (<li key={idx}>Class: {d.class} - probability: {d.prob}</li>)
+          })}
         </div>
       );
     }
@@ -178,7 +188,7 @@ class Upload extends React.Component {
         <div>
             {this.state.files.map(file => {
               return (
-                  <img src={URL.createObjectURL(file)} alt='' />
+                  <img key={file.name} src={URL.createObjectURL(file)} alt='' />
                 );
             })}
         </div>

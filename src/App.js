@@ -13,19 +13,15 @@ class App extends React.Component {
 
   callAPI() {
     return fetch('http://localhost:9000/testAPI')
-      // .then(res => res.text())
-      // .then(res => this.setState({ apiResponse: res }))
-      // .catch(err => err);
   }
 
+  // https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
   componentDidMount() {
     this._asyncRequest = this.callAPI().then(externalData => externalData.text()).then(res => {
       this._asyncRequest = null;
       this.setState({apiResponse: res});
     })
   }
-    // this.callAPI();
-  // }
 
   componentWillUnmount() {
     if (this._asyncRequest) {

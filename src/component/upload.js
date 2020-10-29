@@ -2,6 +2,7 @@ import React from "react";
 import Dropzone from "../component/dropzone";
 import "./upload.css";
 import Progress from "../component/progress";
+import 'whatwg-fetch'
 
 class Upload extends React.Component {
   constructor(props) {
@@ -10,13 +11,15 @@ class Upload extends React.Component {
       files: [],
       uploading: false,
       uploadProgress: {},
-      successfullUploaded: false
+      successfullUploaded: false,
+      predictions: []
     };
 
     this.onFilesAdded = this.onFilesAdded.bind(this);
     this.uploadFiles = this.uploadFiles.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
     this.renderActions = this.renderActions.bind(this);
+    this.renderPredictions = this.renderPredictions.bind(this);
   }
 
   onFilesAdded(files) {
@@ -27,12 +30,27 @@ class Upload extends React.Component {
 
   async uploadFiles() {
     this.setState({ uploadProgress: {}, uploading: true });
-    const promises = [];
-    this.state.files.forEach(file => {
-      promises.push(this.sendRequest(file));
-    });
+    // const promises = [];
+    // this.state.files.forEach(file => {
+      // promises.push(this.sendRequest(file));
+    // });
     try {
-      await Promise.all(promises);
+      this.state.files.forEach(file => {
+        const formData = new FormData();
+        formData.append("file", file, file.name);
+
+        fetch('http://localhost:9000/upload', {
+          method: 'POST',
+          body: formData
+        })
+        .then(res => res.json())
+        .then(json => this.setState({predictions: json.data.top5 }))
+        .catch(err => console.log(err));
+      });
+      
+
+
+      // await Promise.all(promises);
 
       this.setState({ successfullUploaded: true, uploading: false });
     } catch (e) {
@@ -121,6 +139,19 @@ class Upload extends React.Component {
     }
   }
 
+  renderPredictions() {
+    console.log(this.state.predictions)
+    if (this.state.predictions.length > 0) {
+      return (
+        <div>
+        {this.state.predictions.map(function(d, idx){
+           return (<li key={idx}>Class: {d.class} - probability: {d.prob}</li>)
+         })}
+        </div>
+      );
+    }
+  }
+
   render() {
     return (
       <div className="Upload">
@@ -148,10 +179,11 @@ class Upload extends React.Component {
         <div>
             {this.state.files.map(file => {
               return (
-                  <img src={URL.createObjectURL(file)} />
+                  <img src={URL.createObjectURL(file)} alt='' />
                 );
             })}
-          </div>
+        </div>
+        {this.renderPredictions()}
       </div>
     );
   }

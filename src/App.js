@@ -2,7 +2,6 @@ import './App.css';
 import React from 'react';
 import Upload from './component/upload';
 
-
 function App() {
   const [isAPIAlive, setApiAlive] = React.useState(false);
   const [isAPIModelResponse, setAPIModelResponse] = React.useState(false);
@@ -16,9 +15,7 @@ function App() {
 
   if (!isAPIAlive) return <p>API is alive.</p>
   return(
-    <div className="Card">
-      <Upload />
-    </div>
+    <Upload />
   )
 }
 

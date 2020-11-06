@@ -2,7 +2,22 @@ import React from "react";
 import Dropzone from "../component/dropzone";
 import "./upload.css";
 import Progress from "../component/progress";
-import 'whatwg-fetch'
+import 'whatwg-fetch';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import useStyles from '../component/style';
+
 
 
 class Upload extends React.Component {
@@ -101,54 +116,140 @@ class Upload extends React.Component {
   renderPredictions() {
     if (this.state.TFpredictions.length > 0 || this.state.CVpredictions.length > 0) {
       return (
-        <div>
-          TensorFlow predictions: 
-          {this.state.TFpredictions.map(function(d, idx){
-            return (<li key={idx}>Class: {d.class} - probability: {parseInt(d.prob * 100)}%</li>)
-          })}
-          
-          Custom Vision predictions: 
-          {this.state.CVpredictions.map(function(d, idx){
-            return (<li key={idx}>Class: {d.class} - probability: {parseInt(d.prob * 100)}%</li>)
-          })}
-        </div>
+          <Table size='small'>
+            <TableHead>
+              <TableRow>
+                <TableCell>TensorFlow Class</TableCell>
+                <TableCell>TensorFlow Prediction</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.state.TFpredictions.map((d, idx) => (
+                <TableRow key={idx}>
+                  <TableCell>{d.class}</TableCell>
+                  <TableCell>{parseInt(d.prob * 100)}%</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
       );
     }
   }
 
+  renderPredictionsCustomVision() {
+    if (this.state.TFpredictions.length > 0 || this.state.CVpredictions.length > 0) {
+      return (
+        <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Custom Vision Class</TableCell>
+                <TableCell>Custom Vision Prediction</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.state.CVpredictions.map((d, idx) => (
+                <TableRow key={idx}>
+                  <TableCell>{d.class}</TableCell>
+                  <TableCell>{parseInt(d.prob * 100)}%</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+      );
+    }
+  }
+
+  
+
   render() {
     return (
-      <div className="Upload">
-        <span className="Title">Upload Files</span>
-        <div className="Content">
-          <div>
-            <Dropzone
-              onFilesAdded={this.onFilesAdded}
-              disabled={this.state.uploading || this.state.successfullUploaded}
-            />
-          </div>
-          <div className="Files">
-            {this.state.files.map(file => {
-              return (
-                <div key={file.name} className="Row">
+      // <div>
+      //   {/* <span className="Title">Upload Files</span> */}
+      //   <div>
+      //     <div>
+      //       <Dropzone
+      //         onFilesAdded={this.onFilesAdded}
+      //         disabled={this.state.uploading || this.state.successfullUploaded}
+      //       />
+      //     </div>
+      //     <div className="Files">
+      //       {this.state.files.map(file => {
+      //         return (
+      //           <div key={file.name} className="Row">
                   
-                  <span className="Filename">{file.name}</span>
-                  {this.renderProgress(file)}
-                </div>
-              );
-            })}
-          </div>      
-        </div>
-        <div className="Actions">{this.renderActions()}</div>
-        <div>
-            {this.state.files.map(file => {
-              return (
-                  <img key={file.name} src={URL.createObjectURL(file)} alt='' />
-                );
-            })}
-        </div>
-        {this.renderPredictions()}
-      </div>
+      //             <span className="Filename">{file.name}</span>
+      //             {this.renderProgress(file)}
+      //           </div>
+      //         );
+      //       })}
+      //     </div>      
+      //   </div>
+      //   <div className="Actions">{this.renderActions()}</div>
+      //   <div>
+      //       {this.state.files.map(file => {
+      //         return (
+      //             <img key={file.name} src={URL.createObjectURL(file)} alt='' />
+      //           );
+      //       })}
+      //   </div>
+      //   {this.renderPredictions()}
+      //   {this.renderPredictionsCustomVision()}
+      // </div>
+      <div className='root'>
+        <CssBaseline />
+
+        <main className='content'>
+          
+          <div className='appBarSpacer' />
+          <Container maxWidth="lg" className='container'>
+            
+            <Grid container spacing={3}>
+
+              <Grid item xs={12} md={8} lg={9}>
+                <Paper className='paper; fixedHeight'>
+                  {/* <Chart /> */}
+                    <Dropzone
+                      onFilesAdded={this.onFilesAdded}
+                      disabled={this.state.uploading || this.state.successfullUploaded}
+                    />
+                    {this.state.files.map(file => {
+                      return (
+                        <div key={file.name} className="Row">
+                          
+                          <span className="Filename">{file.name}</span>
+                          {this.renderProgress(file)}
+                        </div>
+                      );
+                    })}
+                </Paper>
+              </Grid>
+
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper className='paper; fixedHeight'>
+                  {/* <Deposits /> */}
+                  {this.state.files.map(file => {
+                    return (
+                        <img key={file.name} src={URL.createObjectURL(file)} alt='' />
+                      );
+                  })}
+                </Paper>
+                <div className="Actions">{this.renderActions()}</div>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Paper className='paper'>
+                  {/* <Orders /> */}
+                  {this.renderPredictions()}
+                  {this.renderPredictionsCustomVision()}
+                </Paper>
+              </Grid>
+            </Grid>
+            <Box pt={4}>
+              {/* <Copyright /> */}
+            </Box>
+          </Container>
+        </main>
+    </div>
     );
   }
 }

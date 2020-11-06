@@ -96,3 +96,25 @@
     cursor: default;
   }
   
+
+  .root {
+    display: 'flex';
+  }
+  .content {
+    flex-grow: 1;
+    height: '100vh';
+    overflow: 'auto';
+  }
+  .container {
+    padding-top: 4;
+    padding-bottom: 4;
+  }
+  .paper {
+    padding: 2px;
+    display: 'flex';
+    overflow: 'auto';
+    flex-direction: 'column';
+  }
+  .fixedHeight {
+    height: 240;
+  }

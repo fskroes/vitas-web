@@ -104,12 +104,12 @@ class Upload extends React.Component {
         <div>
           TensorFlow predictions: 
           {this.state.TFpredictions.map(function(d, idx){
-            return (<li key={idx}>Class: {d.class} - probability: {(d.prob * 100)}</li>)
+            return (<li key={idx}>Class: {d.class} - probability: {parseInt(d.prob * 100)}%</li>)
           })}
           
           Custom Vision predictions: 
           {this.state.CVpredictions.map(function(d, idx){
-            return (<li key={idx}>Class: {d.class} - probability: {(d.prob * 100)}</li>)
+            return (<li key={idx}>Class: {d.class} - probability: {parseInt(d.prob * 100)}%</li>)
           })}
         </div>
       );

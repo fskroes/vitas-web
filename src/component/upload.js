@@ -4,6 +4,7 @@ import "./upload.css";
 import Progress from "../component/progress";
 import 'whatwg-fetch'
 
+
 class Upload extends React.Component {
   constructor(props) {
     super(props);
@@ -149,12 +150,12 @@ class Upload extends React.Component {
         <div>
           TensorFlow predictions: 
           {this.state.TFpredictions.map(function(d, idx){
-            return (<li key={idx}>Class: {d.class} - probability: {d.prob}</li>)
+            return (<li key={idx}>Class: {d.class} - probability: {(d.prob * 100)}</li>)
           })}
           
           Custom Vision predictions: 
           {this.state.CVpredictions.map(function(d, idx){
-            return (<li key={idx}>Class: {d.class} - probability: {d.prob}</li>)
+            return (<li key={idx}>Class: {d.class} - probability: {(d.prob * 100)}</li>)
           })}
         </div>
       );

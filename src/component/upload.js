@@ -162,38 +162,6 @@ class Upload extends React.Component {
 
   render() {
     return (
-      // <div>
-      //   {/* <span className="Title">Upload Files</span> */}
-      //   <div>
-      //     <div>
-      //       <Dropzone
-      //         onFilesAdded={this.onFilesAdded}
-      //         disabled={this.state.uploading || this.state.successfullUploaded}
-      //       />
-      //     </div>
-      //     <div className="Files">
-      //       {this.state.files.map(file => {
-      //         return (
-      //           <div key={file.name} className="Row">
-                  
-      //             <span className="Filename">{file.name}</span>
-      //             {this.renderProgress(file)}
-      //           </div>
-      //         );
-      //       })}
-      //     </div>      
-      //   </div>
-      //   <div className="Actions">{this.renderActions()}</div>
-      //   <div>
-      //       {this.state.files.map(file => {
-      //         return (
-      //             <img key={file.name} src={URL.createObjectURL(file)} alt='' />
-      //           );
-      //       })}
-      //   </div>
-      //   {this.renderPredictions()}
-      //   {this.renderPredictionsCustomVision()}
-      // </div>
       <div className='root'>
         <CssBaseline />
 
@@ -202,30 +170,30 @@ class Upload extends React.Component {
           <div className='appBarSpacer' />
           <Container maxWidth="lg" className='container'>
             
-            <Grid container spacing={3}>
+            <Grid container spacing={3} direction="row" justify="space-evenly" alignItems="center">
 
               <Grid item xs={12} md={8} lg={9}>
                 <Paper className='paper; fixedHeight'>
-                  {/* <Chart /> */}
-                    <Dropzone
-                      onFilesAdded={this.onFilesAdded}
-                      disabled={this.state.uploading || this.state.successfullUploaded}
-                    />
-                    {this.state.files.map(file => {
-                      return (
-                        <div key={file.name} className="Row">
-                          
-                          <span className="Filename">{file.name}</span>
-                          {this.renderProgress(file)}
-                        </div>
-                      );
-                    })}
+                  <Dropzone
+                    onFilesAdded={this.onFilesAdded}
+                    disabled={this.state.uploading || this.state.successfullUploaded}
+                  />
+                </Paper>
+                <Paper className='paper; fixedHeight'>
+                  {this.state.files.map(file => {
+                    return (
+                      <div key={file.name} className="Row">
+                        
+                        <span className="Filename">{file.name}</span>
+                        {this.renderProgress(file)}
+                      </div>
+                    );
+                  })}
                 </Paper>
               </Grid>
 
               <Grid item xs={12} md={4} lg={3}>
                 <Paper className='paper; fixedHeight'>
-                  {/* <Deposits /> */}
                   {this.state.files.map(file => {
                     return (
                         <img key={file.name} src={URL.createObjectURL(file)} alt='' />
@@ -235,17 +203,18 @@ class Upload extends React.Component {
                 <div className="Actions">{this.renderActions()}</div>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} md={4} lg={3}>
                 <Paper className='paper'>
-                  {/* <Orders /> */}
                   {this.renderPredictions()}
+                </Paper>
+              </Grid>
+
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper className='paper'>
                   {this.renderPredictionsCustomVision()}
                 </Paper>
               </Grid>
             </Grid>
-            <Box pt={4}>
-              {/* <Copyright /> */}
-            </Box>
           </Container>
         </main>
     </div>

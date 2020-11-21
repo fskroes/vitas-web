@@ -17,8 +17,6 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
-
-
 class Upload extends React.Component {
   constructor(props) {
     super(props);
@@ -31,13 +29,19 @@ class Upload extends React.Component {
       CVpredictions: []
     };
 
-    this.onFilesAdded = this.onFilesAdded.bind(this);
+    /**
+     * Opmerking Tjardo: binden hoeft niet mits je arrow functions gebruikt (zie onFilesAdded).
+     * Arrow functions zijn ES6 (javascript 6) die 'this' niet bindt aan de scope van de functie zelf.
+     * ES6 is momenteel niet ondersteund door browsers; frameworks zoals React gebruiken een polyfill voor ES6.
+     */
+    // this.onFilesAdded = this.onFilesAdded.bind(this);
+
     this.uploadFiles = this.uploadFiles.bind(this);
     this.renderActions = this.renderActions.bind(this);
     this.renderPredictions = this.renderPredictions.bind(this);
   }
 
-  onFilesAdded(files) {
+  onFilesAdded = (files) => {
     this.setState(prevState => ({
       files: prevState.files.concat(files)
     }));
@@ -56,12 +60,13 @@ class Upload extends React.Component {
         })
         .then(res => res.json())
         .then(json => {
-          this.setState({TFpredictions: json.dataTF.top5 })
-          this.setState({CVpredictions: json.dataCV.top5_customvision})
+          // Opmerking Tjardo: setState is een async functie; let hierom op dat je de state niet  meerdere malen tergelijkertijd update!.
+          // Ik heb onderstaand 1 setState gemaakt van de twee die er stonden.
+          this.setState({TFpredictions: json.dataTF.top5, CVpredictions: json.dataCV.top5_customvision })
         })
         .catch(err => console.log(err));
       });
-      
+
       this.setState({ successfullUploaded: true, uploading: false });
     } catch (e) {
       // Not Production ready! Do some error handling here instead...
@@ -113,9 +118,10 @@ class Upload extends React.Component {
   }
 
   renderPredictions() {
-    if (this.state.TFpredictions.length > 0 || this.state.CVpredictions.length > 0) {
+    if (this.state.TFpredictions.length > 0) {
       return (
-          <Table size='small'>
+        <Paper className="paper">
+          <Table size="small">
             <TableHead>
               <TableRow>
                 <TableCell>TensorFlow Class</TableCell>
@@ -131,14 +137,16 @@ class Upload extends React.Component {
               ))}
             </TableBody>
           </Table>
+        </Paper>
       );
     }
   }
 
   renderPredictionsCustomVision() {
-    if (this.state.TFpredictions.length > 0 || this.state.CVpredictions.length > 0) {
+    if (this.state.CVpredictions.length > 0) {
       return (
-        <Table>
+        <Paper className="paper">
+          <Table>
             <TableHead>
               <TableRow>
                 <TableCell>Custom Vision Class</TableCell>
@@ -154,70 +162,56 @@ class Upload extends React.Component {
               ))}
             </TableBody>
           </Table>
+        </Paper>
       );
     }
   }
 
-  
-
   render() {
     return (
-      <div className='root'>
+      <div className="root">
         <CssBaseline />
 
-        <main className='content'>
-          
-          <div className='appBarSpacer' />
-          <Container maxWidth="lg" className='container'>
-            
-            <Grid container spacing={3} direction="row" justify="space-evenly" alignItems="center">
+        <main className="content">
 
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper className='paper; fixedHeight'>
-                  <Dropzone
-                    onFilesAdded={this.onFilesAdded}
-                    disabled={this.state.uploading || this.state.successfullUploaded}
-                  />
-                </Paper>
-                <Paper className='paper; fixedHeight'>
-                  {this.state.files.map(file => {
-                    return (
-                      <div key={file.name} className="Row">
-                        
-                        <span className="Filename">{file.name}</span>
-                        {this.renderProgress(file)}
-                      </div>
-                    );
-                  })}
-                </Paper>
-              </Grid>
+          <div className="appBarSpacer"></div>
 
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper className='paper; fixedHeight'>
-                  {this.state.files.map(file => {
-                    return (
-                        <img key={file.name} src={URL.createObjectURL(file)} alt='' />
+          <Container maxWidth="lg" className="container">
+            {!this.state.files.length && (
+              <Paper className="paper fixedHeight">
+                <Dropzone
+                  onFilesAdded={this.onFilesAdded}
+                  disabled={this.state.uploading || this.state.successfullUploaded}
+                />
+              </Paper>
+            )}
+
+            {!!this.state.files.length && (
+              <div className={(this.state.TFpredictions.length || this.state.CVpredictions.length) ? 'flex' : ''}>
+                <div className="left">
+                  <Paper className="paper images">
+                    {this.state.files.map(file => {
+                      return (
+                        <div key={file.name} className="imgContainer">
+                          <img src={URL.createObjectURL(file)} alt="" />
+                          <span className="Filename">{file.name}</span>
+                          {this.renderProgress(file)}
+                        </div>
                       );
-                  })}
-                </Paper>
-                <div className="Actions">{this.renderActions()}</div>
-              </Grid>
-
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper className='paper'>
+                    })}
+                  </Paper>
+                </div>
+                <div className="right">
                   {this.renderPredictions()}
-                </Paper>
-              </Grid>
-
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper className='paper'>
                   {this.renderPredictionsCustomVision()}
-                </Paper>
-              </Grid>
-            </Grid>
+                </div>
+              </div>
+            )}
+
+            <div className="Actions">{this.renderActions()}</div>
           </Container>
         </main>
-    </div>
+      </div>
     );
   }
 }

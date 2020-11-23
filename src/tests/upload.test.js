@@ -10,15 +10,20 @@ it('should be possible to activate button with Spacebar', () => {
 });
 
 // Mock functions
-const clickFn = jest.fn();
+// const clickFn = jest.fn();
 
-describe('MyComponent', () => {
-    it('button click should hide component', () => {
-        const component = shallow(<Upload onClick={clickFn} />);
-        component
-            .find('button')
-            .simulate('click');
+// describe('MyComponent', () => {
+//     it('button click should hide component', () => {
+//         const component = shallow(<Upload onClick={clickFn} />);
+//         component
+//             .find('button#my-button-two')
+//             .simulate('click');
         
-        expect(clickFn).toHaveBeenCalled();
-    });
-  });
+//             expect(clickFn).toHaveBeenCalled();
+//     });
+// });
+
+// create mock for Dropzone data
+const dropzone_file_added = {
+    files: []
+}

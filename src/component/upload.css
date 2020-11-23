@@ -96,11 +96,11 @@ button:disabled {
   cursor: default;
 }
 
-.flex {
+/* .flex {
   display: flex;
-}
+} */
 
-.root {
+/* .root {
   display: flex;
 }
 .content {
@@ -131,9 +131,9 @@ button:disabled {
   padding: 10px;
   margin-right: 10px;
 }
-  .imgContainer > img {
-    max-width: 100%;
-  }
-  .imgContainer > img:not(:last-of-type) {
-    margin-bottom: 10px;
-  }
+.imgContainer > img {
+  max-width: 100%;
+}
+.imgContainer > img:not(:last-of-type) {
+  margin-bottom: 10px;
+} */

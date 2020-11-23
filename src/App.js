@@ -12,7 +12,6 @@ import Footer from './component/footer';
 
 function App() {
   const [isAPIAlive, setApiAlive] = React.useState(false);
-  const [] = React.useState(false);
 
   React.useEffect(() => {
     fetch('http://localhost:9000/testAPI')
@@ -23,7 +22,7 @@ function App() {
 
   const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',
+      flexGrow: 1,
     },
     appBarSpacer: theme.mixins.toolbar,
     content: {
@@ -49,7 +48,8 @@ function App() {
         <Header />
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-          <Container maxWidth="lg" className={classes.container}>
+          <Container container maxWidth="auto" className={classes.container}>
+
             <Upload />
 
           </Container>

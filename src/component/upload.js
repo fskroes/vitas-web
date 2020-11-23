@@ -126,7 +126,7 @@ function Upload() {
     if (TFpredictions.length > 0) {
       return (
         <div style={{ padding: 20 }}>
-<TableContainer component={Paper}>
+        <TableContainer component={Paper}>
           <Table className={classes.table} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>

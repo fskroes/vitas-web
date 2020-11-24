@@ -221,8 +221,11 @@ function Upload() {
         </Grid>
       
       
+      <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+        <div style={{ padding: 20 }}>{renderActions()}</div>
+        {/* <div className="Actions">{renderActions()}</div> */}
+      </Grid>
       
-      <div className="Actions">{renderActions()}</div>
     </React.Fragment>
   );
 }

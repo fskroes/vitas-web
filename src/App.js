@@ -4,10 +4,7 @@ import Upload from './component/upload';
 import Header from './component/header';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
 import Footer from './component/footer';
 
 function App() {

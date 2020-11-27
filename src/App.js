@@ -11,7 +11,7 @@ function App() {
   const [isAPIAlive, setApiAlive] = React.useState(false);
 
   React.useEffect(() => {
-    fetch('http://localhost:9000/testAPI')
+    fetch('http://localhost:3000/api/testAPI')
       .then(res => res.text())
       .then(() => setApiAlive(true))
       .catch(() => setApiAlive(false))
@@ -37,7 +37,7 @@ function App() {
 
 
 
-  if (!isAPIAlive) return <p>API is alive.</p>
+  // if (!isAPIAlive) return <p>API is alive.</p>
   return(
     <React.Fragment>
       <div className={classes.root}>

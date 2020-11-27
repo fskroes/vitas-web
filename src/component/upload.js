@@ -53,7 +53,7 @@ function Upload() {
         const formData = new FormData();
         formData.append("file", file, file.name);
 
-        fetch('http://localhost:3000/api/upload', {
+        fetch('https://vitas-ml-api.azurewebsites.net/api/upload', {
           method: 'POST',
           body: formData
         })

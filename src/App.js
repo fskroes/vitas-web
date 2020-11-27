@@ -11,7 +11,7 @@ function App() {
   const [isAPIAlive, setApiAlive] = React.useState(false);
 
   React.useEffect(() => {
-    fetch('http://localhost:3000/api/testAPI')
+    fetch('https://vitas-ml-api.azurewebsites.net/api/testAPI')
       .then(res => res.text())
       .then(() => setApiAlive(true))
       .catch(() => setApiAlive(false))
